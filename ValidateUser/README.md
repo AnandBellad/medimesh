@@ -1,7 +1,7 @@
 # ValidateUser
 
 ## Overview
-The `ValidateUser` project is a microservice built using Java and Spring Boot. It is designed to handle and analyze course progress events for users. The service provides RESTful endpoints for event management and course analysis..
+The `ValidateUser` project is a microservice built using Java and Spring Boot. It is designed to handle and analyze course progress events for users. The service provides RESTful endpoints for event management and course analysis.
 
 ---
 
