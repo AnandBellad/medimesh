@@ -28,7 +28,7 @@ jobs:
       - name: Parse JaCoCo coverage and display summary
         id: coverage
         run: |
-          COVERAGE_FILE="./course-service/target/site/jacoco/jacoco.xml"
+          COVERAGE_FILE="./ValidateUser/target/site/jacoco/jacoco.xml"
       
           if [ ! -f "$COVERAGE_FILE" ]; then
             echo "JaCoCo XML not found!"
