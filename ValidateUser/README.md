@@ -88,4 +88,4 @@ mvn test
 mvn jacoco:report
 ```
 The coverage report will look similar to the example below:
-![img.png](img.png)
+![img.png](../covergaeReport.png)
