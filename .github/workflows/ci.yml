@@ -21,15 +21,16 @@ jobs:
           java-version: '17'
           cache: 'maven'
 
-      - name: Build and run tests
+      - name: Build and run tests with coverage
         run: mvn -B clean verify
+        working-directory: ./ValidateUser
 
       - name: Upload JaCoCo coverage report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
-          path: target/site/jacoco
-          
+          path: ValidateUser/target/site/jacoco
+
       - name: List target directory
         run: ls -R target || true
