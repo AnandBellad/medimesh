@@ -28,16 +28,29 @@ jobs:
       - name: Parse JaCoCo coverage and display summary
         id: coverage
         run: |
-          COVERAGE_FILE="./ValidateUser/target/site/jacoco/jacoco.xml"
-          if [ -f "$COVERAGE_FILE" ]; then
-            COVERAGE=$(grep -oPm1 "(?<=<counter type=\"INSTRUCTION\" missed=\")\d+\" covered=\"\d+" "$COVERAGE_FILE" | sed 's/" covered="/ /' | awk '{print $2/($1+$2)*100}')
-            COVERAGE_ROUNDED=$(printf "%.2f" "$COVERAGE")
-            echo "Coverage: $COVERAGE_ROUNDED%"
-            echo "coverage=$COVERAGE_ROUNDED" >> $GITHUB_OUTPUT
-          else
+          COVERAGE_FILE="./course-service/target/site/jacoco/jacoco.xml"
+      
+          if [ ! -f "$COVERAGE_FILE" ]; then
             echo "JaCoCo XML not found!"
             echo "coverage=0" >> $GITHUB_OUTPUT
+            exit 1
           fi
+      
+          # Extract missed and covered instruction counts
+          read MISSED COVERED <<< $(grep -oPm1 '(?<=<counter type="INSTRUCTION" missed=")\d+" covered="\d+' "$COVERAGE_FILE" | sed 's/" covered="/ /')
+      
+          # Avoid division by zero
+          if [ -z "$MISSED" ] || [ -z "$COVERED" ] || [ $((MISSED + COVERED)) -eq 0 ]; then
+            echo "No coverage data found."
+            echo "coverage=0" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+          # Calculate coverage as float
+          COVERAGE=$(awk -v m="$MISSED" -v c="$COVERED" 'BEGIN { printf "%.2f", (c / (m + c)) * 100 }')
+      
+          echo "Coverage: $COVERAGE%"
+          echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
 
       - name: Add coverage summary to GitHub Actions
         if: always()
