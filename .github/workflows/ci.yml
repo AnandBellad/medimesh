@@ -30,3 +30,6 @@ jobs:
         with:
           name: jacoco-report
           path: target/site/jacoco
+          
+      - name: List target directory
+        run: ls -R target || true
