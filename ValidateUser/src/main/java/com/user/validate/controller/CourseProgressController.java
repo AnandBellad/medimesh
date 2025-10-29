@@ -9,6 +9,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+/**
+ * This class handles RESTful endpoints for managing and analyzing
+ * course progress events. It provides functionality to:
+ * - Create and validate course progress events.
+ * - Retrieve all events for a specific user in chronological order.
+ * - Analyze course metrics, including participant counts and pass rates.
+ *
+ * This controller interacts with the CourseProgressEventRepository to perform
+ * database operations and ensures proper validation and error handling.
+ */
 @RestController
 @RequestMapping("/v1/events")
 public class CourseProgressController {
