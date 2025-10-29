@@ -32,5 +32,16 @@ jobs:
           name: jacoco-report
           path: ValidateUser/target/site/jacoco
 
-      - name: List target directory
-        run: ls -R target || true
+      - name: Verify code coverage
+        run: |
+          COVERAGE=$(xmllint --xpath "string(//report/counter[@type='INSTRUCTION']/@covered)" target/site/jacoco/jacoco.xml)
+          MISSED=$(xmllint --xpath "string(//report/counter[@type='INSTRUCTION']/@missed)" target/site/jacoco/jacoco.xml)
+          TOTAL=$((COVERAGE + MISSED))
+          PERCENTAGE=$((COVERAGE * 100 / TOTAL))
+          echo "Coverage: $PERCENTAGE%"
+          if [ "$PERCENTAGE" -lt 100 ]; then
+            echo "Code coverage is below 80%."
+            exit 1
+          fi
+        shell: bash
+        
